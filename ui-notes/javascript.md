@@ -235,29 +235,34 @@ function greet(name) {
 ```
 
 ## Arrays
- ### Array methods
- ```
+
+### Array methods
+
+```
 arr.push(someValue); //adds element at the end of the array
 arr.unshift(someValue); //adds element at the beginning of the array
 
-    //push() and unshift() methods returns length of modified array
-    arr = [1,2,3,4,5];
-    const len = arr.push(8);
-    console.log(len); //6
+   //push() and unshift() methods returns length of modified array
+   arr = [1,2,3,4,5];
+   const len = arr.push(8);
+   console.log(len); //6
 
 arr.pop(); //removes last element of the array
 arr.shift(); //removes first element of the array
 
-    //pop() and shift() return the removed element 
-    arr = [1,2,3,4,5];
-    const poppedElement = arr.pop();
-    console.log(poppedElement); //5
+   //pop() and shift() return the removed element
+   arr = [1,2,3,4,5];
+   const poppedElement = arr.pop();
+   console.log(poppedElement); //5
 
 arr.indexOf(3); //Knowing position of an element in an array, if it is not there, it will return -1
 arr.includes(3); //Knowing if an element is present in an array or not, returns true,/fals, (strict equality, no type coersion)
 ```
+
 ## Objects
+
 A data structure which combines key-value pairs in one variable.
+
 ```
 //Object literal syntax
 const obj1 = {
@@ -267,9 +272,11 @@ const obj1 = {
     friends: ['Motu', 'Lambu', 'Kullu']
 }
 ```
+
 Each key in the object is called a property. So, we can say tha object obj1 has 4 properties.
 
-Retrieving and changing data in objects: 
+Retrieving and changing data in objects:
+
 ```
 console.log(obj1)//whole object, order does not matter in objects
 
@@ -288,9 +295,11 @@ obj1['location'] = 'India'; //adding new property
 const nameKey = 'Name';
 console.log(obj1['first' + nameKey]) //Purushottam
 ```
+
 ### Object Methods
 
 As functions are just values, we can store them in Objects as key value pairs.
+
 ```
 const obj2 = {
     firstName: "Purushottam",
@@ -303,7 +312,7 @@ const obj2 = {
     //function inside object
     calcAge: function () {
         console.log(this); //whole obj2 object
-        this.age = 2037 - this.birthYear; //this means same object 
+        this.age = 2037 - this.birthYear; //this means same object
     },
     getSummary: function () {
         return `${this.firstName} is a ${this.age} year old ${this.job}, and he has ${this.hasDriversLicense ? 'a' : 'no'} driver's license`;
@@ -318,11 +327,70 @@ console.log(obj2.age);
 console.log(obj2.getSummary());
 ```
 
+## Loops
+
+### For loop
+
+for loop keeps running while the condition is true \
+Best for use when number of iteration is know
+
+```
+    //initial;  condition; increment
+for(let num = 1; num <= 10; num++) {
+    if(num === 5) {
+        continue; //will skip fifth iteration
+    }
+    if(num === 9) {
+        break;  //will break the loop at 9 and not execute further
+    }
+    console.log(num);
+}
+```
+
+```
+//loop inisde a loop
+for(let exercise = 1; exercise < 4; exercise++) {
+    console.log(`----------- Starting exercise ${exercise}`);
+
+    for(let rep = 1; rep < 6; rep++) {
+        console.log(`Lifting weight repetition ${rep}`);
+    }
+}
+```
+
+### While loop
+
+Best in use when we do not depend on any counter, and it is not known that how many times the loop is going to run. \
+In while loop we only specify condition, unlike we specify initial and increment/decrement too in for loop
+
+```
+let rep=0; //initial is declared outside
+while (rep <= 10) {
+    console.log(`Lifting weight repetition ${rep}`);
+
+    rep++; //increment/decrement done at the end
+}
+```
+
+```
+let dice = Math.trunc(Math.random() * 6) + 1;
+
+while(dice !== 6) {
+    console.log(`You rolled a ${dice}`);
+
+    dice = Math.trunc(Math.random() * 6) + 1;
+    if(dice === 6) console.log('Loop is about to end...');
+}
+
+```
+
 # DOM and Event Fundamentals
+
 DOCUMENT OBJECT MODEL : Structured representation of HTML documnents. Allows Javascript to access html elements and styles to manipulate them. <br>
 Dom is automatically created by the browser as soon as the HTML page loads. Stored in a tree structure.
 <br>
-DOM and DOM methods are part of web API, libraries that browsers implement and we can access from Javascript code. 
+DOM and DOM methods are part of web API, libraries that browsers implement and we can access from Javascript code.
+
 ```
 document.querySelector('.message'); //selecting a element having class name message.
 document.querySelector('.message').textContent; //getting text inside the element.
