@@ -318,4 +318,13 @@ console.log(obj2.age);
 console.log(obj2.getSummary());
 ```
 
-Lec- 46 for loop
+# DOM and Event Fundamentals
+DOCUMENT OBJECT MODEL : Structured representation of HTML documnents. Allows Javascript to access html elements and styles to manipulate them. <br>
+Dom is automatically created by the browser as soon as the HTML page loads. Stored in a tree structure.
+<br>
+DOM and DOM methods are part of web API, libraries that browsers implement and we can access from Javascript code. 
+```
+document.querySelector('.message'); //selecting a element having class name message.
+document.querySelector('.message').textContent; //getting text inside the element.
+
+```
