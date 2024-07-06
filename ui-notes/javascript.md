@@ -324,7 +324,15 @@ Dom is automatically created by the browser as soon as the HTML page loads. Stor
 <br>
 DOM and DOM methods are part of web API, libraries that browsers implement and we can access from Javascript code. 
 ```
+//select the element
 document.querySelector('.message'); //selecting a element having class name message.
+
+//get and set the text content
 document.querySelector('.message').textContent; //getting text inside the element.
+document.querySelector('.message').textContent = 'Some other text'; //setting text inside the element.
+
+//get and set the value
+console.log(document.querySelector('.message').value) //getting value inside the element (input element).
+document.querySelector('.message').value = 'Some other text'; //setting value inside the element (input element).
 
 ```
