@@ -479,4 +479,75 @@ document.addEventListener('keydown', function(eventObj) {
 
 # Behind the scenes of Javascript
 
-Javascript is a high-level, prototype-based object-oriented
+Javascript is a high-level, prototype-based object-oriented, multi-paradigm, interpreted or just-in-time compiled, dynamic, single-threaded, garbage-collected programming language with first-class functions and non-blocking event loop consurrency model.
+
+**High-level** : Developers do not have to manage resources manually, like garbage collection, memory allocation, but it cannot be as fast/optimized as low level languages.
+<br><br>
+**Garbage-collected** : Cleans memory automatically
+<br><br>
+**Interpreted or just-in-time compiled** : Javascript engine interprets the code to machine code (0s and 1s) and executes it immediately.
+<br><br>
+**Multi-paradigm** : Paradigm : An approach of structuring code which will direct your coding style and technique. There are three paradigms and javascript supports all of them:  <br> 1. Procedural programming, 2. Object-oriented programming, 3. Functional programming
+<br><br>
+**Prototype-base object oriented** : Almost everything in Javascript is object except for primitive values (numbers, string, etc...). Instance of a class inherits all the properties and methods of the class, called prototype inheritance. 
+<br><br>
+**First-class functions** : Functions are treated just as regular variables. We can pass functions as arguments to other functions and return functions from other functions.
+<br><br>
+**Dynamic** : Javascript is synamically typed language, we don't assign data types to variables, instead they are known or decided at runtime, when Javascript engine runs our code. Data type can easily be changed as we re-assign the variables.
+<br><br>
+**Single-threaded & Non-blocking event loop** : Javascript runs in one single thread, so it can only one thing at a time. In case of long running tasks, JS has non-blocking behaviour, by using Event Loop.
+<br>
+Event loop : takes long running tasks, executes them in the 'background' and puts them back in the main thread once they are finished. 
+
+## The JavaScript engine
+A JS Engine is a computer program that executes JS code. Every browser has its own JS engine, but most well known engine is Google's V8 engine.
+<br><br>
+Any Javascript engine always contains a **Call Stack** and a **Heap**.
+<br>
+Call Stack : Our Code is executed in Call Stack using **Execution Context**.
+<br>
+Heap : Heap is an unstructured memory pool which stores all the objects that our application needs.
+
+### Compilation vs Interpretation
+Computer's processor only understand binary/machine code (0s and 1s). And therefore every single program need to be converted to machine code. And this can happen using compilation or interpretation.
+<br><br>
+**Compilation** : Entire code is converted into machine code at once, and written to a binary file that can be executed by a computer. <br>
+**Interpretation** : Interpreter runs through the source coode and executed it line by line.<br>
+JS used to be an Interpreted language, but now with modern JS it uses mix of Compilation and Interpretation, called **Just-In-Time (JIT) Compilation**.
+<br>
+**Just-In-Time (JIT) Compilation**: Entire code is converted into machine code at once, then executed immediately.
+
+### Steps of Just-in-time compilation 
+**Parsing** : To read the code. During the parsing process the code is parsed into **Abstract Syntax Tree (AST)** . This works by splitting each line of code that are meaningful to the language (const, function, etc...) and then saving all these pieces into the tree in a structured format.<br><br>
+**Compilation** : Takes the generated AST and compiles it into machine code. <br><br>
+**Execution** : Machine code generated above is executed right away. <br><br>
+**Optimization** : In the beginning un-optimized  machine code is generated in order to start execution ASAP, but in background the code is being optimized and re-compiled during the already running program execution.
+
+## The JavaScript Runtime in the Browser
+JS Runtime has JS Engine which consist of Heap and Call Stack, Web APIs and Callback Queue. <br>
+Web API is responsible for functionalities provided to the engine, accessible on window object. (DOM, Timers, Fetch API, ...) <br>
+Callback queue contains the queue of callback functions from the DOM event listeners. (onClick, timer, data, ...). When call stack is empty, the item in the callback queue is pushed in the call stack for execution. This process is called **Event Loop**.
+
+## Execution Context and the Call Stack
+When code finishes compiling, A  **Global Execution Context** is created for the top level code (Code which is not inside any function).
+<br>
+**Execution Context** : Environment in which a piece of JS code is executed. Storess all the necessary information for some code to be executed.
+<br>
+In any JS code no matter how big it is, there is only one Global Execution Context, which is default context, created for code that not inside any function (top-level).
+<br>
+For each function call a new execution context is created containing all the necessary information that is required to run that function.
+
+## What is inside Execution Context ?
+**Variable Environment** : Stores all the variables and their values (let, const and var declarations), Functions, and Arument objects which needs to be passed to the function.
+<br>
+**Scope Chain** : Consists of references to variables that are located outside of the current function.
+<br>
+**This** : Stores the value of this keyword.
+<br><br>
+NOTE: <br>
+All therese are generated in creation phase, right before execution. <br>
+Arrow function does not have aruments object and **this** keyword.
+
+## Scope And The Scope Chain
+**Scoping** : How our program's variables are organized and accessed. Where fo variable live? or Where can we access a certain varible and where not ? <br>
+**Lexical Scoping** : Scoping where the scope of a variable is determined by where it is written in the code. <br>
