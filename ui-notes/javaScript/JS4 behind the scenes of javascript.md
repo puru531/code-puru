@@ -88,7 +88,7 @@ Arrow function does not have aruments object and **this** keyword.
 **Function Scope** : Varibled are accessible only inside the function which are declared inside a function. NOT outside. Also called local scope. <br>
 **Block Scope (ES6)** : Variables declared inside a block (curly braces), are only accessible inside that block and its child blocks. HOWEVER, this only applies to **let** and **const** variables. Functions are also block scoped (only in strict mode). **var** is function scoped.
 
-```
+```js run
 'use strict'
 
 function calcAge(birthYear) {
@@ -139,4 +139,143 @@ let and const variables
     Scope : Block
 
 function expression and arrows : Depends how they are created, if using var or let/const, these functions are variables and they behave exact same way as variables.
+```
+
+### Variable Hoisting example
+
+```js run
+console.log(me); // undefinded
+console.log(job); // ReferenceError : cannot access 'job' before initialization
+console.log(year); // not executed after error.
+
+var me = "Puru"; //available in window object also
+let job = "Programmer"; //not available in window object
+const year = 1998; //not available in window object
+```
+
+### Function Hoisting Example
+
+```js run
+//accessing before functions are defined.
+console.log(addDecl(2, 2)); // 4
+console.log(addExpr(2, 2)); // ReferenceError : cannot access 'addExpr' before initialization
+console.log(addArrow(2, 2)); // not executed after error.
+
+//function declaration
+function addDecl(a, b) {
+  return a + b;
+}
+
+//function expression
+const addExpr = function (a, b) {
+  return a + b;
+};
+
+//Arrow function
+const addArrow = (a, b) => a + b;
+
+// ----------------------------------------------------------------
+//what if we change const to var and acess it before they are defined
+
+console.log(addExprWithVar(2, 2)); //TypeError : addExprWithVar is not a function
+//because var is hoisted, but it is hoisted with default value as undefined and not a function, we are getting error as "addExprWithVar is not a function".
+
+//same with addArrowWithVar
+
+//function expression
+var addExprWithVar = function (a, b) {
+  return a + b;
+};
+
+//Arrow function
+var addArrowWithVar = (a, b) => a + b;
+```
+
+## The 'this' keyword
+
+Special variavble that is created for every execution context (every function). Takes the value of (point to) the "owner" of the function in which the 'this' keyword is used. <br>
+'this' is NOT static. It depends on how the function is called, and its value is only assigned when the function is actually called. <br>
+
+### Four ways in which functions can be called (other ways are call, bind, apply)
+
+- **Method** : 'this' keyword points to the Object on which the method is called.
+
+```js run
+const obj1 = {
+  name: "Puru",
+  year: 1998,
+  calcAge: function () {
+    return 2037 - this.year; //here 'this' points to object which is calling this method (see below)
+  },
+};
+```
+
+- **Simple Function call** : 'this' keyword is undefined. (ONLY valid for STRICT MODE). <br>
+  If not in scrict mode it points to global variable object (window object in browser).
+
+- **Arrow functions** : 'this' keyword point 'this' of surrounding function or parent function (lexical this).
+
+- **Event listener** : 'this' keyword points to DOM element that the handler is attached to.
+
+NOTE : 'this' does NOT point to the function itself, and also NOT the its variable environment.
+
+```js run global
+console.log(this); //gives window object when not in strict mode
+```
+
+```js run global
+"use strict";
+const calcAge = function (birthYear) {
+  console.log(2037 - birthYear);
+  console.log(this); //undefined in regular function call
+};
+calcAge(2010);
+```
+
+```js run global
+"use strict";
+const calcAgeArrow = (birthYear) => {
+  console.log(2037 - birthYear);
+  console.log(this); //window object (lexical this), this keyword of parent scope.
+};
+calcAgeArrow(2010);
+```
+
+**'this' keyword points to the object that is calling the method, not in which the method is written**
+
+```js run
+const obj1 = {
+  name: "Puru",
+  year: 1998,
+  calcAge: function () {
+    return 2037 - this.year; //here 'this' points to object which is calling this method
+  },
+};
+
+const obj2 = {
+  year: 2017;
+}
+
+obj2.calcAge = obj1.calcAge; //method borrowing
+obj2.calcAge(); // 2037 - 2017 = 20 --> because this keyword points to obj2 so year will be 2017.
+
+
+const f = obj1.calcAge;
+f(); // this keyword is undefined here as this is a regular function call, no more inside any object. TypeError : Cannot read property 'year' of indefined at calcAge
+```
+
+**'this' keyword in Regular functions vs. Arrow function**
+
+```js run
+const obj1 = {
+  firstName: "Puru",
+  year: 1998,
+  calcAge: function () { //regular function
+    return 2037 - this.year;
+  },
+  greet : () => console.lg(`Hey ${this.firstName}!`); //arrow function
+};
+
+obj1.greet(); // Hey undefined, arrow function does not have their own this keyword, they take surrounding / lexical this. which is window object in this case, so window.firstName is undefined.
+
 ```
