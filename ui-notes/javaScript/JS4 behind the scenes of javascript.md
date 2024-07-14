@@ -248,7 +248,7 @@ const obj1 = {
   name: "Puru",
   year: 1998,
   calcAge: function () {
-    return 2037 - this.year; //here 'this' points to object which is calling this method
+    console.log(2037 - this.year); //here 'this' points to object which is calling this method
   },
 };
 
@@ -271,7 +271,7 @@ const obj1 = {
   firstName: "Puru",
   year: 1998,
   calcAge: function () { //regular function
-    return 2037 - this.year;
+    console.log(2037 - this.year);
   },
   greet : () => console.lg(`Hey ${this.firstName}!`); //arrow function
 };
@@ -279,3 +279,110 @@ const obj1 = {
 obj1.greet(); // Hey undefined, arrow function does not have their own this keyword, they take surrounding / lexical this. which is window object in this case, so window.firstName is undefined.
 
 ```
+
+Now in above case, if we already have a 'firstName' variable with 'var' keyword, the output will be :
+
+```js run
+var firstName = 'Parth'; //already a variable with var (var resides in global object);
+
+const obj1 = {
+  firstName: "Puru",
+  year: 1998,
+  calcAge: function () { //regular function
+    console.log(2037 - this.year);
+  },
+  greet : () => console.log(`Hey ${this.firstName}!`); //arrow function
+};
+
+obj1.greet(); // Hey Parth, as in this case 'this' keyword points to window object, window object already has firstName variable.
+
+```
+
+Function inside a function inside an object
+
+```js run
+const obj1 = {
+  firstName: "Puru",
+  year: 1998,
+  calcAge: function () {
+    console.log(2037 - this.year);
+
+    const isMillenial =  function() {
+      console.log(this.year >= 1981 && this.year <= 1996); // this keyword is undefined here, as this is a regular function and not called by any object.
+    };
+
+    isMillenial();
+  },
+  greet : () => console.log(`Hey ${this.firstName}!`);
+};
+
+obj1.calcAge(); //Error
+
+
+
+//------------------ Solution before ES6 ---------------------
+const obj1 = {
+  firstName: "Puru",
+  year: 1998,
+  calcAge: function () {
+    console.log(2037 - this.year);
+
+    const self = this; //here 'this' keyword point to the object, it will called by, store that in a varible and use it later
+    const isMillenial =  function() {
+      console.log(self.year >= 1981 && self.year <= 1996); //works because of scope chain
+    };
+
+    isMillenial();
+  },
+  greet : () => console.log(`Hey ${this.firstName}!`);
+};
+
+obj1.calcAge();
+
+
+
+
+
+
+//----------- Solution after ES6 : Use Arrow function, it will point to lexical 'this' --------
+const obj1 = {
+  firstName: "Puru",
+  year: 1998,
+  calcAge: function () {
+    console.log(2037 - this.year);
+
+    const isMillenial =  () => {
+      console.log(this.year >= 1981 && this.year <= 1996); //works because Arrow function does not have its 'this' keyword and points to 'this' of surrounding/ lexical this.
+      //Using 'this' of parent scope
+    };
+
+    isMillenial();
+  },
+  greet : () => console.log(`Hey ${this.firstName}!`);
+};
+
+obj1.calcAge();
+```
+
+### argument keywords
+
+Just like 'this' keyword, 'arguments' keyword is also availble in Regular function and not in Arrow functions.
+
+```js run
+//function expression
+const addExpr = function (a, b) {
+  console.log(arguments); //[2, 5, 7, 8, 6]
+  return a + b;
+};
+addEExpr(2, 5, 7, 8, 6); // It is legal to pass more arguments
+
+//Arrow function
+const addArrow = (a, b) => {
+  console.log(arguments); // ReferenseError : arguments is not defined
+  return a + b;
+};
+
+addArrow(2, 5, 7, 8, 6);
+```
+
+## Primitives vs. Objects (Primitive vs. Reference types)
