@@ -386,3 +386,72 @@ addArrow(2, 5, 7, 8, 6);
 ```
 
 ## Primitives vs. Objects (Primitive vs. Reference types)
+
+```js run
+//primitive
+let age = 25; //age variable pointing to address having value 25
+let oldAge = age; //oldAge also pointing to address having value 25
+age = 27; //changing this does not change oldAge, which was pointing to this variable
+//Now age since age is 27, the value of above address will not change, instead age variable will start pointing to new address having value 27.
+
+//oldAge variable still pointing to address of value 25, so value of soldAge will not change.
+console.log(age); //27
+console.log(oldAge); //25
+```
+
+```js run
+//Object or Reference type
+const me = {
+  name: "Puru",
+  age: 25,
+};
+const friend = me;
+friend.age = 27; // changing property in this object will change the propert in 'me' object also, because 'friend' object is reference of that object.
+//Both object points to same address in call stack, whose value is address of object in memory heap.
+console.log(me); //{name: 'Puru', age: 27}
+console.log(friend); //{name: 'Puru', age: 27}
+
+//In the above line (friend.age = 27;), we are able to change the object values even if it is a const because, we are changing the object in heap memory, changing value of const is not allowed in stack, but in case of objects, stack just stores the address of object in heap. If we want to change the address, we will get error :
+
+// friend = {}; // TypeError : Assigment ot constant variable. Here we trying to change the address of object in stack, so we are getting error
+```
+
+How to copy an object and point to different memory address :
+
+```js run
+const me = {
+  name: "Puru",
+  age: 25,
+  family: ["Param", "Parth"],
+};
+
+//copying and assigning to new memory address
+const meCopy = Object.assign({}, me); //shallow copy (copies only first level properties), so family array of both object will point to same address and change at one will change other also.
+
+meCopy.age = 27; //now it will not change 'me' object
+meCopy.family.push("Prerit");
+
+console.log(me); //{name: 'Puru', age: 25, family: ['Param', 'Parth', 'Prerit']}
+//age did not change but family changed because of shallow copy
+
+console.log(meCopy); //{name: 'Puru', age: 27, family: ['Param', 'Parth', 'Prerit']}
+```
+
+**Primitives :** (Primitive types) <br>
+All primitives are stored in call stack (Execution context in which they are declared)
+
+- Number
+- String
+- Boolean
+- Undefined
+- Null
+- Symbol
+- BigInt
+
+**Objects :** (Reference Types) <br>
+All objects are stored in memory of JavaScript Engine
+
+- Object literal
+- Arrays
+- Functions
+- Many more...
