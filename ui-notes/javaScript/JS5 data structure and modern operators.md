@@ -179,4 +179,161 @@ orderDelivery(obj);
 
 ## The Spread operator (...)
 
-Used to expand an array into its all elements, (Unpacking all the array elements at once.)
+Used to expand all iterables into its all its elements, (Unpacking all the array elements at one.)<br>
+Iterables : arrays, string, map, sets. (except objects)
+
+### Spread in Arrays
+
+```js run
+const arr = [5, 6, 7];
+//if we want ro add few items in starting and then all items of arr :
+const badNewArr = [1, 2, arr[0], arr[1], arr[2]]; //wrong way
+
+//using spread operator
+const goodNewArr = [1, 2, ...arr];
+const arrCopy = [...arr]; //here items returned by ...arr will not point to same object or arr, instead it is a new array and point to different memory reference.
+
+const arr1 = [2, 5, 6];
+const arr2 = [5, 6, 9, 5];
+const combinedArr = [...arr1, ...arr2];
+
+//String
+const name = "Purushottam";
+const letters = [...name, " ", "K."];
+
+//should be used to build a new array or pass arguments to functions
+console.log(...name);
+console.log(`${...name} Kumar`); //this will throw error
+
+//spread in function arguments
+
+function orderPasta(ing1, ing2, ing3) {
+    console.log(`Here is your delicious pasta with ${ing1}, ${ing2} and ${ing3}.`);
+  }
+
+  orderPast(['a', 'b', 'c']);
+```
+
+### Spread in objects
+
+Since ES2018 spread operator also works for objects even though objects are not iterables.
+
+```js run
+const restaurant = {
+  name: 'Classico Italiano',
+  location: 'Via Angelo Tavanti 23, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+
+  order: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+
+  openingHours : {
+    thu: {
+      open: 12,
+      close: 22,
+    },
+    fri: {
+      open: 11,
+      close: 23,
+    },
+    sat: {
+      open: 0,
+      close: 24,
+    },
+  };
+};
+
+
+const newRestaurant = {...restaurant, founder: 'Puru', foundedIn: 2025}; //new object
+```
+
+## The Rest Operator (...)
+
+Does opposite of the **Spread operator**, spread expands the array, Rest collects multiple elements and pack them into an array. It is used in the **Left** side of assignment operator unlike Spread Operator in the Right.
+
+### REST pattern in Arrays
+
+```js run
+//SPREAD because in right side of assignment operator (=), Although sometime can be in lef side, together with destructuring
+const arr = [1, 3, [4, 5]];
+
+//REST because on the left of assignment operator
+const [a, b, ...others] = [1, 2, 3, 4, 5, 6, 7];
+/*
+this will save 1 in variable a, 2 in variable b, and rest all items in array 'others'
+ a = 1
+ b = 2
+ others = [3,4,5,6,7]
+*/
+```
+
+```js run
+const arr1 = [2, 5, 6, 7];
+const arr2 = [5, 6, 9, 5];
+//Rest pattern must be the last element, There can only be one REST pattern in a destructuring assignment
+const [a, , b, ...others] = [...arr1, arr2];
+/*
+ a= 2
+ b= 6
+ others = [7,5,6,9,5]
+*/
+```
+
+```js run
+const add = function (...numbers) {
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum += numbers[i];
+  }
+  console.log(sum);
+};
+
+add(2, 3);
+add(5, 3, 6, 7, 8);
+add(6, 2, 6, 8, 7, 8, 9, 6, 5, 4, 4);
+const x = [6, 5, 9, 7];
+add(...x);
+```
+
+### REST pattern in Objects
+
+```js run
+const openingHours = {
+  thu: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0,
+    close: 24,
+  },
+};
+
+const { sat, ...weekdays } = openingHours;
+/*
+sat = {
+    open: 0,
+    close: 24
+  }
+
+weekdays = {
+  thu: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  }
+}
+*/
+```
+
+## Short Circuiting ( && and || )
