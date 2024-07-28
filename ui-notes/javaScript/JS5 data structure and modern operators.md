@@ -358,5 +358,37 @@ console.log(0 && "Puru"); //0
 console.log(3 && "Puru"); //Puru
 console.log("" && "Puru"); //''
 console.log(true && 0); //0
-console.log(undefined && null); //undefined
+console.log("Puru" && undefined && null); //undefined
+```
+
+## The Nullish Coalescing Operator (??)
+
+In short circuitin with OR ( || ), we have a problem that it considers 0 as a false value but sometimes we want zero as a value.
+
+```js run
+const count = 0;
+const totalCount = count || 10; //0  --> here we want totalCount to be 0 but, it getting set as 10
+```
+
+Nullish Coalescing operator solves this problem. It checks only **null** or **undefined** and (0 or '') is considred as a value.
+
+```js run
+const count = 0;
+const totalCount = count || 10; //0
+const totalCount = newValue || 10; //10
+```
+
+## Logical Assigment Operators
+
+Introduced in ES2021
+
+```js run
+const rest1 = {
+  name: "Capri",
+  numGuests: 20,
+};
+const rest2 = {
+  name: "La Piazza",
+  owner: "Giovanni Rossi",
+};
 ```
