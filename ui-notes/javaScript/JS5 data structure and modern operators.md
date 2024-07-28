@@ -387,8 +387,24 @@ const rest1 = {
   name: "Capri",
   numGuests: 20,
 };
+
 const rest2 = {
   name: "La Piazza",
   owner: "Giovanni Rossi",
 };
+// OR assignment operator ( ||= )
+rest1.numGuest ||= 10;
+rest2.numGuest ||= 10;
+
+//same as :
+rest1.numGuest = rest1.numGuest || 10;
+rest2.numGuest = rest2.numGuest || 10;
+
+//Nullish coalescing assignment operator ( ??= )
+rest1.numGuest ??= 10;
+rest2.numGuest ??= 10;
+
+// AND assignment operator ( &&= )
+rest1.numGuest &&= 10; //only works when property is available, for false values it does not add/change property
+rest2.numGuest &&= 10;
 ```
