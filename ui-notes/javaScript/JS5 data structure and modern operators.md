@@ -337,3 +337,26 @@ weekdays = {
 ```
 
 ## Short Circuiting ( && and || )
+
+&& and || can use any data type, return any data type, Short circuiting.
+
+```js run
+// short circuiting with OR (||)
+//if the first operand is truthy then it will immediately return it, without checking the next. If all operands are falsy then it returns the last operand
+console.log(3 || "Puru"); //3
+console.log("" || "Puru"); //Puru
+console.log(true || 0); //true
+console.log(undefined || null); //null //if all falsy then last one is returned
+console.log(undefined || null || false); //false //if all falsy then last one is returned
+console.log(undefined || 0 || "" || "hello" || 23 || null); //hello
+```
+
+```js run
+// short circuiting with AND (&&)
+//If first operand is falsy then it immediately returns it. Otherwise if the first operand is truthy then it will check for next one, Once it finds falsy value, that one is returned, otherwise in case of all truthy last operand is returned.
+console.log(0 && "Puru"); //0
+console.log(3 && "Puru"); //Puru
+console.log("" && "Puru"); //''
+console.log(true && 0); //0
+console.log(undefined && null); //undefined
+```
