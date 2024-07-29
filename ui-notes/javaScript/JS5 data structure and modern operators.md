@@ -408,3 +408,252 @@ rest2.numGuest ??= 10;
 rest1.numGuest &&= 10; //only works when property is available, for false values it does not add/change property
 rest2.numGuest &&= 10;
 ```
+
+## New way of looping arrays (for of loop)
+
+```js run
+const arr = [1, 2, 3, 4, 5, 6];
+for (const item of arr) console.log(item);
+
+//arr.entries() --> return an array of arrays containing element and index
+const arr2 = ["apple", "ball", "cat"];
+console.log(arr2.entries()); // [[0, 'apple'], [1, 'ball'], [2, 'cat']]
+```
+
+## Enhanced Object Literals
+
+Before ES6 :
+
+```js run
+const obj2 = {
+  some: "value",
+};
+
+const obj1 = {
+  someOther: "value",
+  obj2: obj2, //property name and variabke obj2 as value
+  greet: function (name) {
+    //have to give property name and specify function
+    return `Hello ${name}`;
+  },
+};
+```
+
+From ES6 :
+
+```js run
+const obj2 = {
+  some: "value",
+};
+
+const arr = [1,2,3,4]
+
+const obj1 = {
+  someOther: "value",
+  arr[1]: 'two',
+  `day-${1+2}`: 'some value', //we can do computations also
+
+  obj2, //directly specify variable name if we want to keep same name.
+  greet(name) {
+    //explicit property name is not needed for function
+    return `Hello ${name}`;
+  },
+};
+```
+
+## Optional Chaining
+
+Helps prevent errors when some property is not ther and we want to do some action on it or want to access data further:
+
+```js run
+const openingHours = {
+  thu: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0,
+    close: 24,
+  },
+};
+
+console.log(openingHours.mon); //undefined
+//now with this undefined, I try to access openning hours
+console.log(openingHours.mon.open); // TypeError : Cannot read property 'open' of undefined.
+//or do any action
+console.log(openingHours.name.toLowercase()); //TypeError : Cannot find method 'toLowercase' of undefined
+
+//The application breaks in above cases and does not execute code further
+
+//to overcome this we can have below solution :
+
+//before ES6
+console.log(openingHours.mon && openingHours.mon.open);
+console.log(openingHours.name && openingHours.name.toLowercase());
+//this will return undefined in first operand only and will not check further, hance does break application and continues execution
+
+//After ES6 (use optional chaining ?.)
+console.log(openingHours.mon?.open); //undefined --> if mon property is there then only executes further otherwise returns undefined
+console.log(openingHours.name?.toLowercase()); //undefined --> if name property is there then only executes further otherwise returns undefined
+```
+
+## Looping Objects : Object Keys, Values, and Entries
+
+Looping over property names of object:
+
+```js run
+const openingHours = {
+  thu: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0,
+    close: 24,
+  },
+};
+
+// Object.keys(objectName); give array of names of all the properties
+const properties = Object.keys(openingHours);
+console.log(properties); //["thu", "fri", "sat"];
+let openStr = `We are open ${properties.length} days : `; //We are open 3 days
+
+for (const day of properties) {
+  console.log(day); //thu fri sat
+  openStr += ` ${day},`;
+}
+console.log(openStr); //We are open 3 days : thu, fri, sat
+```
+
+Looping over property values of object:
+
+```js run
+const openingHours = {
+  thu: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0,
+    close: 24,
+  },
+};
+const values = Object.values(openingHours);
+console.log(values); // [{open: 12, close: 22}, {open: 11, close: 23}, {open: 0, close: 24}]
+```
+
+Looping over both keys and values of object:
+
+```js run
+const openingHours = {
+  thu: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0,
+    close: 24,
+  },
+};
+const entries = Object.entries(openingHours);
+console.log(entries);
+/* Array of properties and values
+ [
+  ["thu", { open: 12, close: 22 }], 
+  ["fri", { open: 11, close: 23 }], 
+  ["sat", { open: 0, close: 24 }]
+  ]
+ */
+
+for (const [day, { open, close }] of entries) {
+  console.log(`On ${day} we open at ${open} and close at ${close}`);
+}
+/*
+On thu we open at 12 and close at 22
+On fri we open at 11 and close at 23
+On sat we open at 0 and close at 24
+*/
+```
+
+## Sets
+
+Initally JS had only Arrays and Objects as built in data structures, but ES6 introduced Sets and Maps.
+
+a Set is a built-in object that allows you to store unique values of any type, whether primitive values or object references. Here's a brief overview of how Set works:
+
+**Key Features of Set:**
+
+- **Unique Values:** A Set automatically removes duplicate values.
+- **Any Type:** You can store any type of value, including objects and primitives.
+- **Order:** Elements are iterated in the order of insertion.
+
+**Common Methods and Properties:**
+
+- **add(value):** Adds a new element with the given value to the Set.
+- **delete(value):** Removes the specified value from the Set.
+- **has(value):** Returns true if the Set contains the specified value.
+- **clear():** Removes all elements from the Set.
+- **size:** Returns the number of elements in the Set.
+
+```js run
+// Creating a new Set
+const mySet = new Set();
+
+// Adding values to the Set
+mySet.add(1);
+mySet.add(5);
+mySet.add(5); // Duplicate value, will be ignored
+mySet.add("hello");
+mySet.add({ a: 1, b: 2 });
+
+// Checking the size of the Set
+console.log(mySet.size); // Output: 4
+
+// Checking if a value exists in the Set
+console.log(mySet.has(5)); // Output: true
+console.log(mySet.has(10)); // Output: false
+
+// Iterating over the Set
+for (const item of mySet) {
+  console.log(item);
+}
+
+// Removing a value from the Set
+mySet.delete(5);
+console.log(mySet.has(5)); // Output: false
+
+// Clearing the Set
+mySet.clear();
+console.log(mySet.size); // Output: 0
+```
+
+**Use Cases:**
+
+- Removing Duplicates: Quickly remove duplicate values from an array.
+- Tracking Unique Items: Keep track of unique items in a collection.
+
+**Example: Removing Duplicates from an Array**
+
+```js run
+const numbers = [1, 2, 2, 3, 4, 4, 5];
+const uniqueNumbers = [...new Set(numbers)];
+console.log(uniqueNumbers); // Output: [1, 2, 3, 4, 5]
+```
+
+Set is a powerful and efficient way to handle collections of unique values in JavaScript.
