@@ -602,6 +602,7 @@ a Set is a built-in object that allows you to store unique values of any type, w
 - **Unique Values:** A Set automatically removes duplicate values.
 - **Any Type:** You can store any type of value, including objects and primitives.
 - **Order:** Elements are iterated in the order of insertion.
+- Sets does not have indexes, so we cannot access elements by index.
 
 **Common Methods and Properties:**
 
@@ -641,6 +642,12 @@ console.log(mySet.has(5)); // Output: false
 // Clearing the Set
 mySet.clear();
 console.log(mySet.size); // Output: 0
+
+// set with string
+console.log(new Set("Puru")); //Set(4) {'P', 'u', 'r', 'u'}
+
+//accessing with index
+console.log(mySet[0]); //undefined, NO index in set
 ```
 
 **Use Cases:**
@@ -657,3 +664,262 @@ console.log(uniqueNumbers); // Output: [1, 2, 3, 4, 5]
 ```
 
 Set is a powerful and efficient way to handle collections of unique values in JavaScript.
+
+## Maps
+
+A map is a data structure that allows you to store key-value pairs. It is similar to an object, but with a few key differences:
+
+- **Key Type:** In a map, the key can be of any type, including objects and primitives.
+- **Order:** Elements are iterated in the order of insertion.
+- **Size Property:** A map has a size property that returns the number of key-value pairs.
+- **Iteration:** Maps have built-in methods for iterating over keys, values, and entries.
+
+```js run
+// Creating a new Map
+const myMap = new Map();
+myMap.set("name", "Classico Italiano");
+myMap.set(1, "Firenze, Italy");
+console.log(myMap.set(2, "Lisbon, Portugal")); //setting value also return the map
+/*
+Map(3) {
+  'name' => 'Classico Italiano',
+  1 => 'Firenze, Italy',
+  2 => 'Lisbon, Portugal'
+}
+*/
+
+//Since adding values also returns the map, we can chain the set method
+myMap
+  .set("categories", ["Italian", "Pizzeria", "Vegetarian", "Organic"])
+  .set("open", 11)
+  .set("close", 23)
+  .set(true, "We are open :D")
+  .set(false, "We are closed :(");
+
+// Getting values from the Map
+console.log(myMap.get("name")); //Classico Italiano
+console.log(myMap.get(true)); //We are open :D
+
+const time = 21;
+myMap.get(time > myMap.get("open") && time < myMap.get("close")); //We are open :D
+
+// Checking if a key exists in the Map
+console.log(myMap.has("categories")); //true
+
+// Deleting a key from the Map
+myMap.delete(2);
+
+// checking size
+console.log(myMap.size); //6
+
+// Clearing the Map
+myMap.clear();
+
+//Arrays or objects can be used as keys
+const arr = [1, 2];
+myMap.set(arr, "test data");
+console.log(myMap.get(arr)); //test data
+console.log(myMap.get([1, 2])); //undefined, because it is a different array, even though it has same values, it is different object in memory reference.
+```
+
+### Iterating over Maps
+
+```js run
+const question = new Map([
+  ["question", "What is the best programming language?"],
+  [1, "C"],
+  [2, "Java"],
+  [3, "JavaScript"],
+  ["correct", 3],
+  ["true", "Correct"],
+  ["false", "Try Again"],
+]);
+
+console.log(question);
+/*
+Map(7) {
+  'question' => 'What is the best programming language?',
+  1 => 'C',
+  2 => 'Java',
+  3 => 'JavaScript',
+  'correct' => 3,
+  'true' => 'Correct',
+  'false' => 'Try Again'
+}
+*/
+
+//Iterating over map
+for (const [key, value] of question) {
+  if (typeof key === "number") console.log(`Answer ${key} : ${value}`);
+}
+
+//Converting object to map
+const openingHours = {
+  thu: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0,
+    close: 24,
+  },
+};
+const hoursMap = new Map(Object.entries(openingHours));
+/*
+  Map(3) {
+  'thu' => { open: 12, close: 22 },
+  'fri' => { open: 11, close: 23 },
+  'sat' => { open: 0, close: 24 }
+*/
+```
+
+## String and its methods
+
+Strings are primitive values in JavaScript, but they also have built-in methods that allow you to manipulate and work with strings. String is immutable. Here are some common string methods:
+
+```js run
+const airline = "TAP Air Portugal";
+const plane = "A320";
+console.log(plane[0]); //A
+console.log("B737"[0]); //B
+console.log(aireline.length); //16
+console.log(airline.indexOf("r")); //6
+console.log(airline.lastIndexOf("r")); //10
+console.log(airline.indexOf("Portugal")); //8
+console.log(airline.indexOf("portugal")); //-1, case sensitive, if not found then returns -1
+```
+
+### slice() method
+
+```js run
+console.log(airline.slice(4)); //Air Portugal, starts from 4th index, returns a new string, does not change original string
+console.log(airline.slice(4, 7)); //Air, starts from 4th index and ends at 7th index, length of returned sub-string is 7-4 = 3
+console.log(airline.slice(0, airline.indexOf(" "))); //TAP, starts from 0 and ends at first space
+console.log(airline.slice(airline.lastIndexOf(" ") + 1)); //Portugal, starts from last space and goes till end
+console.log(airline.slice(-2)); //al, starts from last 2 characters
+console.log(airline.slice(1, -1)); //AP Air Portuga, starts from 1 and goes till last but excludes last 1 character
+
+// function to check if a letter is present in the string
+const checkMiddleSeat = function (seat) {
+  const s = seat.slice(-1);
+  if (s === "B" || s === "C") console.log("You got the middle seat");
+  else console.log("You got lucky");
+};
+checkMiddleSeat("11B");
+checkMiddleSeat("23C");
+checkMiddleSeat("3E");
+```
+
+### toLowerCase(), toUpperCase(), and trim() methods
+
+```js run
+const airline = "TAP Air Portugal";
+const plane = "A320";
+console.log(airline.toLowerCase()); //tap air portugal
+console.log(airline.toUpperCase()); //TAP AIR PORTUGAL
+
+const passenger = "  Puru  ";
+console.log(passenger.trim()); //Puru, removes extra spaces from start and end
+
+//trimStart, trimEnd
+console.log(passenger.trimStart()); //Puru  , removes extra spaces from start
+console.log(passenger.trimEnd()); //  Puru, removes extra spaces from end
+
+// function to fix capitalization in name
+const fixCapitalization = function (name) {
+  const lowerName = name.toLowerCase();
+  const correctName = lowerName[0].toUpperCase() + lowerName.slice(1);
+  console.log(correctName);
+};
+fixCapitalization("pURU"); //Puru
+```
+
+### replace() and replaceAll() method
+
+```js run
+const priceGB = "288,97£";
+const priceUS = priceGB.replace("£", "$").replace(",", "."); //288.97$
+
+const announcement =
+  "All passengers come to boarding door 23. Boarding door 23!";
+console.log(announcement.replace("door", "gate")); //All passengers come to boarding gate 23. Boarding door 23! --> only first occurence is replaced
+console.log(announcement.replaceAll("door", "gate")); ////All passengers come to boarding gate 23. Boarding gate 23!
+
+//replace with regular expression
+console.log(announcement.replace(/door/g, "gate")); //All passengers come to boarding gate 23. Boarding gate 23!
+```
+
+### includes(), startsWith(), and endsWith() methods
+
+```js run
+const plane = "A320neo";
+console.log(plane.includes("A320")); //true, checks if the string is present in the original string
+console.log(plane.includes("Boeing")); //false
+console.log(plane.startsWith("A")); //true, checks if the string starts with the given string
+console.log(plane.startsWith("a")); //false, case sensitive
+console.log(plane.endsWith("neo")); //true, checks if the string ends with the given string
+console.log(plane.endsWith("A")); //false
+```
+
+### split() method
+
+Split method is used to split a string into an array of substrings based on a specified separator.
+
+```js run
+console.log("a+very+nice+string".split("+")); //["a", "very", "nice", "string"]
+console.log("Purushottam Kumar".split(" ")); //["Purushottam", "Kumar"]
+
+const [firstName, lastName] = "Purushottam Kumar".split(" ");
+console.log(firstName); //Purushottam
+console.log(lastName); //Kumar
+```
+
+### join() method
+
+Join method is used to join all elements of an array into a string.
+
+```js run
+const [firstName, lastName] = "Purushottam Kumar".split(" ");
+const newName = ["Mr.", firstName, lastName.toUpperCase()].join(" ");
+console.log(newName); //Mr. Purushottam KUMAR
+```
+
+### padStart() and padEnd() methods
+
+PadStart and PadEnd methods are used to add padding to a string. The padStart method adds given character to the start of a string, while the padEnd method adds given character to the end of a string.
+
+```js run
+const message = "Go to gate 23!";
+console.log(message.padStart(25, "+")); //++++++++++Go to gate 23!, adds + to start of string to make it 25 characters long
+console.log("Puru".padStart(25, "+")); //++++++++++++++++++++Puru
+
+console.log(message.padEnd(25, "+")); //Go to gate 23!++++++++++, adds + to end of string to make it 25 characters long
+console.log("Puru".padEnd(25, "+")); //Puru++++++++++++++++++++
+
+console.log("Puru".padStart(25, "+").padEnd(30, "+")); //++++++++++++++++++++Puru+++++
+
+//function to mask credit card number
+const maskCreditCard = function (number) {
+  const str = number + ""; //convert number to string
+  const last = str.slice(-4);
+  return last.padStart(str.length, "*");
+};
+console.log(maskCreditCard(1234567890)); //*********7890
+console.log(maskCreditCard("1234567890")); //*********7890
+```
+
+### repeat() method
+
+Repeat method is used to repeat a string a specified number of times.
+
+```js run
+const message2 = "Bad weather... All departures delayed... ";
+message2.repeat(5);
+/*
+  Bad weather... Alldepartures delayed... Bad weather... Alldepartures delayed... Bad weather... Alldepartures delayed... Bad weather... Alldepartures delayed... Bad weather... Alldepartures delayed... 
+*/
+```
