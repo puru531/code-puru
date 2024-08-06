@@ -146,16 +146,16 @@ function greet(name) {
 ### Array methods
 
 ```js run
-arr.push(someValue); //adds element at the end of the array
-arr.unshift(someValue); //adds element at the beginning of the array
+arr.push(someValue); //adds element at the end of the array, and returns length of modified array
+arr.unshift(someValue); //adds element at the beginning of the array, and returns length of modified array
 
 //push() and unshift() methods returns length of modified array
 arr = [1, 2, 3, 4, 5];
 const len = arr.push(8);
 console.log(len); //6
 
-arr.pop(); //removes last element of the array
-arr.shift(); //removes first element of the array
+arr.pop(); //removes last element of the array, and returns the removed element
+arr.shift(); //removes first element of the array, and returns the removed element
 
 //pop() and shift() return the removed element
 arr = [1, 2, 3, 4, 5];

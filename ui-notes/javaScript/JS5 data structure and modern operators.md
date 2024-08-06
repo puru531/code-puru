@@ -665,6 +665,27 @@ console.log(uniqueNumbers); // Output: [1, 2, 3, 4, 5]
 
 Set is a powerful and efficient way to handle collections of unique values in JavaScript.
 
+### forEach method in Set
+
+```js run
+const orderSet = new Set([
+  "Pasta",
+  "Pizza",
+  "Risotto",
+  "Pasta",
+  "Pizza",
+  "Pizza",
+]);
+orderSet.forEach((value, _, set) => {
+  console.log(value);
+});
+/*
+Pasta
+Pizza
+Risotto
+*/
+```
+
 ## Maps
 
 A map is a data structure that allows you to store key-value pairs. It is similar to an object, but with a few key differences:
@@ -774,6 +795,32 @@ const hoursMap = new Map(Object.entries(openingHours));
   'thu' => { open: 12, close: 22 },
   'fri' => { open: 11, close: 23 },
   'sat' => { open: 0, close: 24 }
+*/
+```
+
+### forEach method in Map
+
+```js run
+const question = new Map([
+  ["question", "What is the best programming language?"],
+  [1, "C"],
+  [2, "Java"],
+  [3, "JavaScript"],
+  ["correct", 3],
+  ["true", "Correct"],
+  ["false", "Try Again"],
+]);
+question.forEach((value, key) => {
+  console.log(`This is ${key}, and it's set to ${value}`);
+});
+/*
+This is question, and it's set to What is the best programming language?
+This is 1, and it's set to C
+This is 2, and it's set to Java
+This is 3, and it's set to JavaScript
+This is correct, and it's set to 3
+This is true, and it's set to Correct
+This is false, and it's set to Try Again
 */
 ```
 
