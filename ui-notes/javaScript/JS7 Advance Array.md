@@ -309,3 +309,149 @@ console.log(result); // false
 const result = arr.every((element) => element > 0);
 console.log(result); // true
 ```
+
+## flat()
+
+Flat() is used to flatten the nested arrays. It returns a new array.
+
+It takes an argument that specifies the depth of the nested arrays. The default value is 1.
+
+```js run
+const arr = [1, 2, [3, 4, [5, 6]]];
+console.log(arr.flat()); // [1, 2, 3, 4, [5, 6]]
+
+//with depth
+console.log(arr.flat(2)); // [1, 2, 3, 4, 5, 6]
+```
+
+## flatMap()
+
+flatMap() is used to map each element using a mapping function and then flatten the result into a new array.
+
+It is equivalent to using map() and then flat(). It returns a new array.
+
+```js run
+const arr = [1, 2, [3, 4], [5, 6]];
+const newArr = arr.flatMap((element) => element * 2); // [2, 4, 6, 8, 10, 12]
+```
+
+```js run
+const accounts = [
+  { name: "John Doe", movements: [200, 450, -400, 3000, -650, -130, 70, 1300] },
+  { name: "Jane Doe", movements: [500, 340, -150, 3000, -650, -130, 70, 1300] },
+];
+
+//total deposits in all accounts using map and then flat and then reduce
+const totalDeposits = accounts
+  .map((acc) => acc.movements) // [[200, 450, -400, 3000, -650, -130, 70, 1300], [500, 340, -150, 3000, -650, -130, 70, 1300]]
+  .flat() // [200, 450, -400, 3000, -650, -130, 70, 1300, 500, 340, -150, 3000, -650, -130, 70, 1300]
+  .reduce((acc, mov) => acc + mov, 0); // 8620
+
+//using flatMap()
+const totalDeposits = accounts
+  .flatMap((acc) => acc.movements) // [200, 450, -400, 3000, -650, -130, 70, 1300, 500, 340, -150, 3000, -650, -130, 70, 1300]
+  .reduce((acc, mov) => acc + mov, 0); // 8620
+```
+
+## sort()
+
+The `sort()` method sorts the elements of an array in place and returns the sorted array. The default sort order is according to string Unicode code points.
+
+**Default Sorting** By default, sort() converts elements to strings and sorts them in ascending order.
+
+```js run
+const fruits = ["banana", "apple", "cherry"];
+fruits.sort();
+console.log(fruits); // Output: ['apple', 'banana', 'cherry']
+
+const numbers = [40, 1, 5, 200];
+numbers.sort();
+console.log(numbers); // Output: [1, 200, 40, 5] (sorted as strings)
+```
+
+**Sorting with a Compare Function** To sort numbers in ascending order, you can use a compare function.
+
+```js run
+const numbers = [40, 1, 5, 200];
+numbers.sort((a, b) => a - b);
+console.log(numbers); // Output: [1, 5, 40, 200]
+```
+
+**Compare function** The compare function compares all the values in the array, two values at a time (a, b).
+The compare function should return:
+
+- A negative value if the first argument is less than the second (a < b).
+- Zero if the two arguments are equal (a === b).
+- A positive value if the first argument is greater than the second (a > b).
+
+```js run
+const numbers = [40, 1, 5, 200];
+numbers.sort((a, b) => b - a); // sort in descending order, if b is less than a, then b comes first
+console.log(numbers); // Output: [200, 40, 5, 1]
+
+//OR using compare function
+const compare = (a, b) => {
+  if (a < b) return -1;
+  if (a > b) return 1;
+  return 0;
+};
+// here, if a is less than b, then a comes first in the sorted array
+```
+
+Sort an array of objects by a property value.
+
+```js run
+const items = [
+  { name: "apple", price: 50 },
+  { name: "banana", price: 30 },
+  { name: "cherry", price: 20 },
+];
+
+items.sort((a, b) => a.price - b.price); // here if a.price is less than b.price, then a comes first
+console.log(items);
+// Output:
+// [
+//   { name: 'cherry', price: 20 },
+//   { name: 'banana', price: 30 },
+//   { name: 'apple', price: 50 }
+// ]
+```
+
+## Create and fill arrays
+
+We can create and fill arrays using the `Array()` constructor and the `fill()` method.
+
+```js run
+const arr = Array(5); // creates an array with 5 empty slots
+//OR
+// const arr = new Array(5); //both are same
+console.log(arr); // Output: [ <5 empty items> ]
+
+const arr = Array(5).fill(0); // creates an array with 5 elements, all elements are 0
+console.log(arr); // Output: [0, 0, 0, 0, 0]
+
+const arr = Array(5).fill("hello"); // creates an array with 5 elements, all elements are "hello"
+console.log(arr); // Output: ['hello', 'hello', 'hello', 'hello', 'hello']
+
+//array with value 1 to 5 using fill and map
+const arr = Array(5)
+  .fill(0)
+  .map((_, index) => index + 1); // creates an array with 5 elements, [1, 2, 3, 4, 5]
+```
+
+Using Array.from() method, from() takes two arguments, the first argument is an object with a length property, and the second argument is a map function.
+
+```js run
+const arr = Array.from({ length: 5 }); // creates an array with 5 empty slots
+console.log(arr); // Output: [ <5 empty items> ]
+
+const arr = Array.from({ length: 5 }, () => 0); // creates an array with 5 elements, all elements are 0
+console.log(arr); // Output: [0, 0, 0, 0, 0]
+```
+
+Using the map() method
+
+```js run
+const arr = Array.from({ length: 5 }, (_, index) => index + 1); // creates an array with 5 elements, [1, 2, 3, 4, 5]
+console.log(arr); // Output: [1, 2, 3, 4, 5]
+```
