@@ -231,9 +231,81 @@ console.log(sortedArr); // [1, 2, 4, 5, 8]
 ## chaining methods
 
 ```js run
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
+movement
+  .filter((mov) => mov > 0)
+  .map((mov) => mov * 2)
+  .reduce((acc, mov) => acc + mov, 0); // 6500 --> 200*2 + 450*2 + 3000*2 + 70*2 + 1300*2 --> filter out positive numbers, double them and sum them
 ```
 
-## find() findIndex()
+## find()
 
-## some() every()
+It returns the first element that satisfies the condition. If no element satisfies the condition, it returns undefined.
+
+The arguments of the callback function are element, index, and the array itself.
+
+```js run
+const arr = [1, 2, 3, 4, 5];
+const result = arr.find((element) => element > 2);
+console.log(result); // 3
+
+const result = arr.find((element) => element > 5);
+console.log(result); // undefined
+```
+
+## findIndex()
+
+It returns the index of the first element that satisfies the condition. If no element satisfies the condition, it returns -1.
+
+The arguments of findIndex() are element, index, and the array itself.
+
+```js run
+const arr = [1, 2, 3, 4, 5];
+const result = arr.findIndex((element) => element > 2);
+console.log(result); // 2
+
+const result = arr.findIndex((element) => element > 5);
+console.log(result); // -1
+
+//with all three arguments
+const result = arr.findIndex((element, index, array) => {
+  console.log(`Element at index ${index} is ${element}`);
+  console.log(`Original array: ${array}`);
+  return element > 2;
+});
+```
+
+## some()
+
+It returns true if at least one element satisfies the condition. Otherwise, it returns false.
+The arguments of some() are element, index, and the array itself.
+
+```js run
+const arr = [1, 2, 3, 4, 5];
+const result = arr.some((element) => element > 2);
+console.log(result); // true
+
+const result = arr.some((element) => element > 5);
+console.log(result); // false
+
+//with all three arguments
+const result = arr.some((element, index, array) => {
+  console.log(`Element at index ${index} is ${element}`);
+  console.log(`Original array: ${array}`);
+  return element > 2;
+});
+```
+
+## every()
+
+It returns true if all elements satisfy the condition. Otherwise, it returns false. The arguments of every() are element, index, and the array itself.
+
+```js run
+const arr = [1, 2, 3, 4, 5];
+const result = arr.every((element) => element > 2);
+console.log(result); // false
+
+const result = arr.every((element) => element > 0);
+console.log(result); // true
+```
