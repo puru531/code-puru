@@ -468,8 +468,27 @@ console.log(new Intl.NumberFormat("en-IN").format(num)); // 38,84,764.23 --> for
 
 //options object for NumberFormat function
 let options = {
-  style: "unit",
-  unit: "mile-per-hour",
+  style: "unit", // decimal, percent, currency, unit
+  unit: "mile-per-hour", // currency = USD, EUR, JPY, unit = mile-per-hour, kilometer-per-hour
 };
 console.log(new Intl.NumberFormat("en-US" options).format(num)); // 3,884,764.23 mph --> formats the number with unit
+
+console.log(new Intl.NumberFormat("en-IN", options).format(num)); // 38,84,764.23 mph --> formats the number with unit in Indian format
+
+// currency
+options = {
+  style: "currency",
+  currency: "INR",
+};
+console.log(new Intl.NumberFormat("en-IN", options).format(num)); // ₹38,84,764.23 --> formats the number with currency in Indian format
+
+// grouping
+options = {
+  style: "currency",
+  currency: "INR",
+  useGrouping: false, // whether to use grouping separators
+};
+console.log(new Intl.NumberFormat("en-IN", options).format(num)); // ₹3884764.23 --> formats the number with currency in Indian format without grouping
 ```
+
+# setTimeout and setInterval
