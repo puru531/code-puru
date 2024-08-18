@@ -492,3 +492,109 @@ console.log(new Intl.NumberFormat("en-IN", options).format(num)); // ₹3884764.
 ```
 
 # setTimeout and setInterval
+
+## setTimeout
+
+`setTimeout` : executes a function or a piece of code once after a specified delay (in milliseconds)
+Syntax :
+
+```js
+setTimeout(function, delay, [param1, param2, ...]);
+```
+
+```js
+setTimeout(() => console.log("Hello World"), 2000); // Hello World --> after 2 seconds
+```
+
+Code execution does not stop while waiting for the timeout to finish. The function is executed after the delay, even if the delay is 0. And other code can run before the timeout.
+
+example :
+
+```js
+console.log("Start");
+setTimeout(() => console.log("Hello World"), 1000);
+console.log("End");
+/*
+Start
+End
+Hello World --> after 1 second, even though the timeout is set to 1 second, the code execution does not stop, the function is executed after the delay
+*/
+```
+
+### Arguments in setTimeout
+
+All arguments after the delay are passed to the function
+
+```js
+setTimeout((text, num) => console.log(`${text} ${num}`), 2000, "Hello", 5); // Hello and 5 are passed as arguments to the function
+```
+
+```js
+// setTimeout example
+const timeout = setTimeout(
+  (param1, param2) => {
+    console.log("timeout", param1, param2);
+  },
+  2000,
+  "param1", // arguments to the function
+  "param2", // arguments to the function
+); // Executes the function after 2 seconds
+```
+
+```js
+setTimeout(console.log, 2000, "Hello", "World"); // Hello World --> console.log is a function, so it can be passed as an argument
+```
+
+### clearTimeout --> to cancel the timeout
+
+```js
+const timeout = setTimeout(() => console.log("Hello World"), 2000);
+clearTimeout(timeout); // cancels the timeout
+```
+
+## setInterval
+
+`setInterval` : executes a function or a piece of code repeatedly, with a fixed time delay between each call
+Syntax :
+
+```js
+setInterval(function, delay, [param1, param2, ...]);
+```
+
+Basic example :
+
+```js
+setInterval(() => console.log("Hello World"), 2000); // Hello World --> every 2 seconds
+```
+
+### Arguments in setInterval
+
+```js
+const interval = setInterval(
+  (param1, param2) => {
+    console.log("interval", param1, param2);
+  },
+  2000,
+  "param1", // arguments to the function
+  "param2", // arguments to the function
+); // Executes the function every 2 seconds
+```
+
+### clearInterval --> to cancel the interval
+
+```js
+const interval = setInterval(() => console.log("Hello World"), 2000);
+clearInterval(interval); // cancels the interval
+```
+
+```js
+// timer of 5 second for 2 minutes and cancel after completion
+let i = 0;
+const interval = setInterval(() => {
+  console.log("Hello World");
+  i++;
+  if (i === 24) {
+    clearInterval(interval);
+  }
+}, 5000);
+```
