@@ -131,7 +131,157 @@ console.log(document.querySelectorAll("p.my-class#my-id")); // NodeList of all <
 - NodeList is more powerful than HTMLCollection. NodeList has more methods and properties than HTMLCollection.
 - NodeList is returned by querySelectorAll() and HTMLCollection is returned by getElementsByTagName(), getElementsByClassName(), etc.
 
-## insertAdjacentHTML
+### Creating and inserting Elements
+
+```js run
+// Create a new element
+const message = document.createElement("div"); // <div></div>
+
+// Add a class to the element
+message.classList.add("message"); // <div class="message"></div>
+
+// Add text to the element
+// message.textContent = "Hello World"; // <div class="message">Hello World</div>
+
+// Add HTML to the element
+message.innerHTML = "<h1>Hello World</h1>"; // <div class="message"><h1>Hello World</h1></div>
+
+// Insert the element into the DOM
+document.body.prepend(message); // <body><div class="message"><h1>Hello World</h1></div>...</body> --> prepend() will insert the element as the first child of the parent element.
+document.body.append(message); // <body>...<div class="message"><h1>Hello World</h1></div></body> ---> append() will insert the element as the last child of the parent element.
+
+/*
+NOTE: If we try to insert the same element again, it will move the element to the new position instead of creating a new element. This is because an element can only exist in one place in the DOM tree at a time. 
+*/
+
+// If we want same element to be inserted at multiple places, we need to clone the element.
+document.body.append(message.cloneNode(true)); // <body>...<div class="message"><h1>Hello World</h1></div><div class="message"><h1>Hello World</h1></div></body>
+
+const header = document.querySelector(".header");
+header.before(message);
+/*
+<body> 
+  <div class="message"><h1>Hello World</h1></div>
+  <header>...</header>
+</body> 
+
+--> before() will insert the element before the given element as sibling.
+*/
+
+header.after(message);
+/*
+<body> 
+  <header>...</header>
+  <div class="message"><h1>Hello World</h1></div>
+</body>
+
+after() will insert the element after the given element as sibling.
+*/
+```
+
+### Deleting Elements
+
+```js run
+/*
+<body> 
+  <header>...</header>
+  <div class="message"><h1>Hello World</h1></div>
+  <button class="btn-close-msg">Close Message</button>
+</body>
+*/
+
+const message = document.querySelector(".message");
+message.remove(); // <body> <header>...</header> <button class="btn-close-msg">Close Message</button> </body> --> remove() will remove the element from the DOM tree.
+
+//Deleting message div on button click
+const btnCloseMsg = document.querySelector(".btn-close-msg");
+btnCloseMsg.addEventListener("click", function () {
+  message.remove(); // new method to remove the element from the DOM tree.
+
+  // message.parentElement.removeChild(message); // old method to remove the element from the DOM tree.
+});
+```
+
+## Styles, Attributes, and Classes
+
+### Styles
+
+#### Setting Inline Styles
+
+```js run
+/*
+<body> 
+  <header>...</header>
+  <div class="message"><h1>Hello World</h1></div>
+  <button class="btn-close-msg">Close Message</button>
+</body>
+*/
+const message = document.querySelector(".message");
+
+message.style.backgroundColor = "blue"; // <div class="message" style="background-color: blue;"><h1>Hello World</h1></div> --> style property is used to set the inline styles of the element.
+message.style.width = "120px"; // <div class="message" style="background-color: blue; width: 120px;"><h1>Hello World</h1></div>
+```
+
+#### Getting Inline Style Values
+
+```js run
+/*
+<body>
+  <header>...</header>
+ <div class="message" style="background-color: blue; width: 120px;"><h1>Hello World</h1></div>
+  <button class="btn-close-msg">Close Message</button>
+</body>
+*/
+const message = document.querySelector(".message");
+console.log(message.style.backgroundColor); // blue --> style property is used to get the inline styles of the element.
+console.log(message.style.height); // "" --> If the style is not set inline, it will return an empty string.
+```
+
+#### Getting Computed Styles
+
+```js run
+//html
+/*
+<body>
+  <header>...</header>
+ <div class="message" style="background-color: blue; width: 120px;"><h1>Hello World</h1></div>
+  <button class="btn-close-msg">Close Message</button>
+</body>
+*/
+//css
+/*
+.message {
+  height: 150px;
+}
+*/
+const message = document.querySelector(".message");
+console.log(getComputedStyle(message).height); // 150px --> getComputedStyle() method is used to get the computed styles of the element.
+
+// getComputedStyle() method returns a CSSStyleDeclaration object that contains all the computed styles of the element.
+
+//increase the height of the message div by 40px
+message.style.height = `${parseFloat(getComputedStyle(message).height) + 40}px`; // <div class="message" style="background-color: blue; width: 120px; height: 190px;"><h1>Hello World</h1></div>
+```
+
+### CSS Variables / Custom Properties
+
+Set the value of the CSS variable.
+
+```js run
+//css file
+/*
+:root {
+  --primary-color: blue;
+}
+.message {
+  background-color: var(--primary-color);
+}
+*/
+
+document.documentElement.style.setProperty("--primary-color", "orangered"); // Set the value of the CSS variable --primary-color to orangered in the root element (html element).
+```
+
+### insertAdjacentHTML
 
 - insertAdjacentHTML is a method that allows you to insert HTML into a specific position in the DOM.
 - It takes two arguments:
