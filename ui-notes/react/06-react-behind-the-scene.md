@@ -1,1 +1,0 @@
-# How React works behind the scene
