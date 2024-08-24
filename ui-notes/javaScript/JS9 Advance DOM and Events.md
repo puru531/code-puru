@@ -202,6 +202,45 @@ btnCloseMsg.addEventListener("click", function () {
 });
 ```
 
+### insertAdjacentHTML
+
+- insertAdjacentHTML is a method that allows you to insert HTML into a specific position in the DOM.
+- It takes two arguments:
+  - The position where you want to insert the HTML.
+  - The HTML you want to insert.
+
+```js run
+const div = document.createElement("div");
+div.innerHTML = "<h1>Hello World</h1>";
+document.body.insertAdjacentHTML("afterbegin", div.outerHTML);
+/*
+body
+  div
+    h1
+      Hello World
+*/
+```
+
+element.outerHTML returns the HTML of the element including the element itself.
+
+```js run
+const div = document.createElement("div");
+div.innerHTML = "<h1>Hello World</h1>";
+console.log(div.outerHTML); // <div><h1>Hello World</h1></div>
+```
+
+Visual representation of the positions:
+
+```html
+<!------- beforebegin ------->
+<p>
+  <!------- afterbegin ------->
+  some text
+  <!------- beforeend ------->
+</p>
+<!------- afterend ------->
+```
+
 ## Styles, Attributes, and Classes
 
 ### Styles
@@ -281,41 +320,195 @@ Set the value of the CSS variable.
 document.documentElement.style.setProperty("--primary-color", "orangered"); // Set the value of the CSS variable --primary-color to orangered in the root element (html element).
 ```
 
-### insertAdjacentHTML
+### Attributes
 
-- insertAdjacentHTML is a method that allows you to insert HTML into a specific position in the DOM.
-- It takes two arguments:
-  - The position where you want to insert the HTML.
-  - The HTML you want to insert.
+Attributes are the extra information that we can add to the HTML elements. (e.g. id, class, src, href, etc.).
+
+#### Getting Attributes
 
 ```js run
-const div = document.createElement("div");
-div.innerHTML = "<h1>Hello World</h1>";
-document.body.insertAdjacentHTML("afterbegin", div.outerHTML);
+//<img src="logo.png" alt="Logo" class="nav__logo" designer="Puru">
+const logo = document.querySelector(".nav__logo"); // <img src="logo.png" alt="Logo" class="nav__logo"> (element with class "nav__logo")
+console.log(logo.src); // http://site.com/logo.png --> src attribute of the element.
+console.log(logo.alt); // Logo --> alt attribute of the element.
+console.log(logo.className); // nav__logo --> class attribute of the element.
+
+// Non-standard attributes
+console.log(logo.designer); // undefined --> custom attribute of the element. It is not a standard attribute, so it will return undefined.
+
+// Get the value of the custom attribute
+console.log(logo.getAttribute("designer")); // Puru --> getAttribute() method is used to get the value of the custom attribute.
+
+console.log(logo.src); // http://site.com/logo.png --> gives the absolute URL of the image.
+console.log(logo.getAttribute("src")); // logo.png --> gives the relative URL of the image.
+
+//Same with href attribute
+```
+
+#### Setting Attributes
+
+```js run
+//<img src="logo.png" alt="Logo" class="nav__logo" designer="Puru">
+const logo = document.querySelector(".nav__logo"); // <img src="logo.png" alt="Logo" class="nav__logo"> (element with class "nav__logo")
+
+logo.alt = "New Logo"; // <img src="logo.png" alt="New Logo" class="nav__logo"> --> alt attribute of the element is changed.
+
+// Set the value of the custom attribute
+logo.setAttribute("designer", "Purushottam"); // <img src="logo.png" alt="New Logo" class="nav__logo" designer="Purushottam"> --> setAttribute() method is used to set the value of the custom attribute.
+
+logo.setAttribute("company", "CodePuru"); // <img src="logo.png" alt="New Logo" class="nav__logo" designer="Purushottam" company="CodePuru"> --> new custom attribute is added to the element.
+```
+
+#### Data Attributes
+
+```js run
+// <div data-id="123"></div>
+const div = document.querySelector("div");
+console.log(div.dataset.id); // 123 --> dataset property is used to get the value of the data attribute.
+
+// Set new value of the data attribute
+div.dataset.id = 456; // <div data-id="456"></div>
+```
+
+```js run
+// <div class="card">Some content</div>
+const card = document.querySelector(".card");
+// set data cardNumber attribute
+card.dataset.cardNumber = 123456;
+console.log(card); // <div class="card" data-card-number="123456">Some content</div> --> camelCase is converted to kebab-case.
+
+// get data cardNumber attribute
+console.log(card.dataset); // {cardNumber: "123456"}
+console.log(card.dataset.cardNumber); // 123456
+console.log(card.getAttribute("data-card-number")); // 123456
+
+console.log(card); // <div class="card" data-card-number="123456">Some content</div>
+
+// remove data cardNumber attribute
+delete card.dataset.cardNumber;
+console.log(card); // <div class="card">Some content</div>
+```
+
+### Classes
+
+`element.classList` is used to add, remove, toggle, and check classes of an element.
+
+`element.classList.add()`, `element.classList.remove()`, `element.classList.toggle()`, `element.classList.contains()` are the methods of classList.
+
+```js run
+// <div class="card">Some content</div>
+const card = document.querySelector(".card");
+
+//add()
+card.classList.add("new-class"); // <div class="card new-class">Some content</div> --> add() method is used to add a class to the element.
+card.classList.add("new-class", "another-class"); // <div class="card new-class another-class">Some content</div> --> add() method can take multiple classes as arguments.
+
+//remove()
+card.classList.remove("new-class"); // <div class="card another-class">Some content</div> --> remove() method is used to remove a class from the element.
+card.classList.remove("new-class", "another-class"); // <div class="card">Some content</div> --> remove() method can take multiple classes as arguments.
+
+//toggle()
+card.classList.toggle("new-class"); // <div class="card new-class">Some content</div> --> toggle() method is used to toggle a class on the element. If the class is present, it will remove it. If the class is not present, it will add it.
+card.classList.toggle("new-class"); // <div class="card">Some content</div> --> toggle() method is used to toggle a class on the element. If the class is present, it will remove it. If the class is not present, it will add it.
+
+//contains()
+console.log(card.classList.contains("card")); // true --> contains() method is used to check if the element has a specific class. It will return true if the class is present, otherwise false.
+```
+
+## Offset
+
+Offset properties are used to get the coordinates of the element.
+
+```js run
+// <a class="btn--scroll-to" href="#section1">Go to Section 1</a>
+const btn = document.querySelector(".btn--scroll-to");
+
+// Element offset properties
+console.log(btn.offsetTop); // 100 --> distance from the top edge of the document to the top edge of the element.
+console.log(btn.offsetLeft); // 200 --> distance from the left edge of the document to the left edge of the element.
+console.log(btn.offsetWidth); // 100 --> width of the element.
+console.log(btn.offsetHeight); // 20 --> height of the element.
+
+console.log(window.pageXOffset); // 0 --> horizontal scroll position of the document.
+console.log(window.pageYOffset); // 0 --> vertical scroll position of the document.
+
+// Height and width of the viewport
+console.log(document.documentElement.clientHeight); // 900 --> height of the viewport.
+console.log(document.documentElement.clientWidth); // 1440 --> width of the viewport.
+```
+
+## getBoundingClientRect()
+
+`getBoundingClientRect()` method is used to get the coordinates of the element.
+
+Offset properties are relative to the viewport, while client properties are relative to the top-left corner of the document.
+
+```js run
+// <a class="btn--scroll-to" href="#section1">Go to Section 1</a>
+const btn = document.querySelector(".btn--scroll-to");
+console.log(btn.getBoundingClientRect()); // DOMRect {x: 0, y: 0, width: 100, height: 20, top: 0, right: 100, bottom: 20, left: 0}
 /*
-body
-  div
-    h1
-      Hello World
-*/
+  x: distance from the left edge of the viewport to the left edge of the element.
+  y: distance from the top edge of the viewport to the top edge of the element.
+  width: width of the element.
+  height: height of the element.
+  top: distance from the top edge of the viewport to the top edge of the element.
+  right: distance from the left edge of the viewport to the right edge of the element.
+  bottom: distance from the top edge of the viewport to the bottom edge of the element.
+  left: distance from the left edge of the viewport to the left edge of the element.
+  */
+
+//show a tooltip on mouseover
+btn.addEventListener("mouseover", function (e) {
+  const rect = btn.getBoundingClientRect();
+  console.log(rect);
+  console.log(e.clientX, e.clientY); // coordinates of the mouse pointer
+  console.log(window.pageXOffset, window.pageYOffset); // scroll position
+  console.log(rect.top + window.pageYOffset, rect.left + window.pageXOffset); // coordinates of the top-left corner of the element
+
+  const tooltip = document.createElement("div");
+  tooltip.classList.add("tooltip");
+  tooltip.textContent = "Tooltip";
+  tooltip.style.top = `${rect.top + window.pageYOffset}px`; // position the tooltip at the top of the element --> top edge of the element + scroll position
+  tooltip.style.left = `${rect.left + window.pageXOffset}px`; // position the tooltip at the left of the element --> left edge of the element + scroll position
+  document.body.append(tooltip);
+
+  btn.addEventListener("mouseout", function () {
+    tooltip.remove();
+  });
+
+  btn.addEventListener("mousemove", function (e) {
+    tooltip.style.top = `${e.clientY + 10}px`; // position the tooltip 10px below the mouse pointer
+    tooltip.style.left = `${e.clientX + 10}px`; // position the tooltip 10px to the right of the mouse pointer
+  }); // move the tooltip with the mouse pointer
+});
 ```
 
-element.outerHTML returns the HTML of the element including the element itself.
+## Scrolling
 
 ```js run
-const div = document.createElement("div");
-div.innerHTML = "<h1>Hello World</h1>";
-console.log(div.outerHTML); // <div><h1>Hello World</h1></div>
-```
+// <a class="btn--scroll-to" href="#section1">Go to Section 1</a>
 
-Visual representation of the positions:
+//old way
+const btnScrollTo = document.querySelector(".btn--scroll-to");
+const section1 = document.querySelector("#section1");
 
-```html
-<!------- beforebegin ------->
-<p>
-  <!------- afterbegin ------->
-  some text
-  <!------- beforeend ------->
-</p>
-<!------- afterend ------->
+//Add event listener to the button
+btnScrollTo.addEventListener("click", function (e) {
+  //first get the coordinates of the section
+  const s1coords = section1.getBoundingClientRect(); // getClientBoundingRect() method is used to get the coordinates of the element.
+
+  //scroll to the section
+  // window.scrollTo( s1coords.left + window.pageXOffset, s1coords.top + window.pageYOffset); // scrollTo() method is used to scroll the document to the specified coordinates.
+  window.scrollTo({
+    left: s1coords.left + window.pageXOffset,
+    top: s1coords.top + window.pageYOffset,
+    behavior: "smooth", // smooth scrolling
+  });
+});
+
+// new way --> works in all modern browsers
+btnScrollTo.addEventListener("click", function (e) {
+  section1.scrollIntoView({ behavior: "smooth" }); // scrollIntoView() method is used to scroll the element into view.
+});
 ```
