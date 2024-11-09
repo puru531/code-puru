@@ -1,0 +1,4 @@
+- Add icon of portfolio website
+- Add title of portfolio website
+- create menu bar of portfolio website
+- Create Hero section of portfolio website with own image and name.
